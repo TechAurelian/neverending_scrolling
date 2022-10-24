@@ -44,10 +44,7 @@ class NeverendingScrollingApp extends StatelessWidget {
           case AppConst.itemRoute:
             final ItemScreenArguments args = settings.arguments as ItemScreenArguments;
             return MaterialPageRoute(
-              builder: (_) => ItemScreen(
-                index: args.index,
-                color: args.color,
-              ),
+              builder: (_) => ItemScreen(indexStr: args.indexStr, color: args.color),
             );
         }
         return null; // Let onUnknownRoute handle this behavior.

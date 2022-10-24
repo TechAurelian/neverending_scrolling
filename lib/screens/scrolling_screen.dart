@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../common/app_const.dart';
 import '../common/app_settings.dart';
 import '../common/ui_strings.dart';
+import '../utils/utils.dart';
 import '../widgets/neverending_list_view.dart';
 import 'item_screen.dart';
 
@@ -31,7 +32,7 @@ class _ScrollingScreenState extends State<ScrollingScreen> {
       initialScrollOffset: AppSettings().listScrollOffset,
     );
 
-    _saveTimer = Timer.periodic(const Duration(seconds: 5), (_) {
+    _saveTimer = Timer.periodic(const Duration(seconds: 3), (_) {
       AppSettings().listScrollOffset = _scrollController.offset;
     });
   }
@@ -46,7 +47,7 @@ class _ScrollingScreenState extends State<ScrollingScreen> {
     await Navigator.pushNamed(
       context,
       AppConst.itemRoute,
-      arguments: ItemScreenArguments(index, color),
+      arguments: ItemScreenArguments(Utils.intToCommaSeparatedString(index), color),
     );
   }
 

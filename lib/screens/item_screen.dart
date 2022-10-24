@@ -9,21 +9,28 @@ import '../utils/color_utils.dart';
 import '../utils/utils.dart';
 
 class ItemScreenArguments {
-  final int index;
+  final String indexStr;
   final Color color;
 
-  ItemScreenArguments(this.index, this.color);
+  ItemScreenArguments(this.indexStr, this.color);
 }
 
 class ItemScreen extends StatelessWidget {
-  const ItemScreen({super.key, required this.index, required this.color});
+  const ItemScreen({super.key, required this.indexStr, required this.color});
 
-  final int index;
+  final String indexStr;
   final Color color;
 
-  void _onCopyPressed(BuildContext context) {
-    final String colorHex = ColorUtils.toHex(color);
-    Utils.copyToClipboard(context, colorHex, successText: UIStrings.colorCopiedSnackbar(colorHex));
+  void _onAppBarAction(BuildContext context, _AppBarActions action) {
+    switch (action) {
+      case _AppBarActions.copyIndex:
+        Utils.copyToClipboard(context, indexStr, successText: UIStrings.itemCopied(indexStr));
+        break;
+      case _AppBarActions.copyColor:
+        final String colorHex = ColorUtils.toHex(color);
+        Utils.copyToClipboard(context, colorHex, successText: UIStrings.itemCopied(colorHex));
+        break;
+    }
   }
 
   @override
@@ -32,15 +39,9 @@ class ItemScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: color,
-      appBar: AppBar(
-        title: Text(UIStrings.itemScreenTitle(Utils.intToCommaSeparatedString(index))),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.copy),
-            tooltip: UIStrings.copyActionTooltip,
-            onPressed: () => _onCopyPressed(context),
-          ),
-        ],
+      appBar: _AppBar(
+        indexStr: indexStr,
+        onAction: (_AppBarActions action) => _onAppBarAction(context, action),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -51,6 +52,7 @@ class ItemScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.caption!.copyWith(color: contrastColor),
             textAlign: TextAlign.center,
           ),
+          const SizedBox(height: 2.0),
           Text(
             ColorUtils.toHex(color),
             style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: contrastColor),
@@ -60,4 +62,43 @@ class ItemScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+enum _AppBarActions {
+  copyIndex,
+  copyColor,
+}
+
+class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _AppBar({Key? key, required this.onAction, required this.indexStr}) : super(key: key);
+
+  final String indexStr;
+
+  /// The callback that is called when an app bar action is pressed.
+  final Function(_AppBarActions action) onAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: Text(UIStrings.itemScreenTitle(indexStr)),
+      actions: <Widget>[
+        PopupMenuButton<_AppBarActions>(
+          onSelected: onAction,
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
+            const PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.copyIndex,
+              child: Text(UIStrings.copyItemAction),
+            ),
+            const PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.copyColor,
+              child: Text(UIStrings.copyColorAction),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

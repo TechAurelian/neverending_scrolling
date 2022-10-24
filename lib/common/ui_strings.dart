@@ -25,6 +25,7 @@ class UIStrings {
 
   static String itemScreenTitle(String index) => 'Item $index';
   static const String itemColorCaption = 'Color';
-  static const String copyActionTooltip = 'Copy color code to clipboard';
-  static String colorCopiedSnackbar(String color) => '$color copied to clipboard';
+  static const String copyItemAction = 'Copy item index';
+  static const String copyColorAction = 'Copy color code';
+  static String itemCopied(String value) => '$value copied to clipboard';
 }
