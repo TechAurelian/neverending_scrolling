@@ -2,7 +2,6 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
-import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../utils/color_utils.dart';
@@ -12,7 +11,7 @@ class NeverendingListView extends StatelessWidget {
   const NeverendingListView({super.key, this.onItemTap});
 
   /// Called when the user taps a list item.
-  final GestureTapCallback? onItemTap;
+  final Function(int index, Color color)? onItemTap;
 
   @override
   Widget build(BuildContext context) {
@@ -35,27 +34,21 @@ class _ListViewItem extends StatelessWidget {
   final int index;
 
   /// Called when the user taps the list item.
-  final GestureTapCallback? onItemTap;
+  final Function(int index, Color color)? onItemTap;
 
   @override
   Widget build(BuildContext context) {
-    final Color backgroundColor = ColorUtils.randomColorFromSeed(index);
-    final Color foregroundColor = ColorUtils.contrastOf(backgroundColor);
+    final Color color = ColorUtils.randomColorFromSeed(index);
+    final Color contrastColor = ColorUtils.contrastOf(color);
 
     return InkWell(
-      onTap: onItemTap,
+      onTap: () => onItemTap?.call(index, color),
       child: Ink(
         color: ColorUtils.randomColorFromSeed(index),
         child: Center(
           child: Text(
             Utils.intToCommaSeparatedString(index),
-            style: TextStyle(
-              fontSize: 20.0,
-              letterSpacing: 1.0,
-              fontWeight: FontWeight.w600,
-              fontFeatures: const <FontFeature>[FontFeature.oldstyleFigures()],
-              color: foregroundColor,
-            ),
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(color: contrastColor),
             textAlign: TextAlign.center,
           ),
         ),

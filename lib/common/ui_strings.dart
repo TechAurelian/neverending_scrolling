@@ -17,4 +17,11 @@ class UIStrings {
   // -----------------------------------------------------------------------------------------------
 
   static const String scrollingScreenTitle = 'Neverending Scrolling?';
+
+  // -----------------------------------------------------------------------------------------------
+  // Item Screen
+  // -----------------------------------------------------------------------------------------------
+
+  static String itemScreenTitle(int index) => 'Item $index';
+  static String itemColor(String color) => 'Color $color';
 }

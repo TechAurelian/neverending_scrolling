@@ -3,7 +3,9 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:neverending_scrolling/screens/item_screen.dart';
 
+import 'common/app_const.dart';
 import 'common/ui_strings.dart';
 import 'screens/scrolling_screen.dart';
 
@@ -25,7 +27,23 @@ class NeverendingScrollingApp extends StatelessWidget {
           onPrimary: Colors.black,
         ),
       ),
-      home: const ScrollingScreen(),
+      initialRoute: AppConst.homeRoute,
+      routes: <String, Widget Function(BuildContext)>{
+        AppConst.homeRoute: (BuildContext context) => const ScrollingScreen(),
+      },
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case AppConst.itemRoute:
+            final ItemScreenArguments args = settings.arguments as ItemScreenArguments;
+            return MaterialPageRoute(
+              builder: (_) => ItemScreen(
+                index: args.index,
+                color: args.color,
+              ),
+            );
+        }
+        return null; // Let onUnknownRoute handle this behavior.
+      },
     );
   }
 }
