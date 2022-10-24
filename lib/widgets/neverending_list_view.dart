@@ -3,21 +3,24 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:neverending_scrolling/common/ui_strings.dart';
 
+import '../common/ui_strings.dart';
 import '../utils/color_utils.dart';
 import '../utils/utils.dart';
 
 class NeverendingListView extends StatelessWidget {
-  const NeverendingListView({super.key, this.onItemTap});
+  const NeverendingListView({super.key, this.onItemTap, this.scrollController});
 
   /// Called when the user taps a list item.
   final Function(int index, Color color)? onItemTap;
 
+  final ScrollController? scrollController;
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemExtent: 96.0,
+      controller: scrollController,
+      itemExtent: 100.0,
       itemBuilder: (BuildContext context, int index) {
         return _ListViewItem(
           index: index,

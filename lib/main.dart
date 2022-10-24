@@ -3,13 +3,21 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:neverending_scrolling/screens/item_screen.dart';
 
 import 'common/app_const.dart';
+import 'common/app_settings.dart';
 import 'common/ui_strings.dart';
+import 'screens/item_screen.dart';
 import 'screens/scrolling_screen.dart';
 
-void main() {
+Future<void> main() async {
+  // First try to load the app settings from Shared Preferences
+  WidgetsFlutterBinding.ensureInitialized();
+  await Future.any([
+    AppSettings().load(),
+    Future.delayed(const Duration(seconds: 5)),
+  ]);
+
   runApp(const NeverendingScrollingApp());
 }
 
