@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:neverending_scrolling/common/ui_strings.dart';
 
 import '../utils/color_utils.dart';
 import '../utils/utils.dart';
@@ -45,12 +46,20 @@ class _ListViewItem extends StatelessWidget {
       onTap: () => onItemTap?.call(index, color),
       child: Ink(
         color: ColorUtils.randomColorFromSeed(index),
-        child: Center(
-          child: Text(
-            Utils.intToCommaSeparatedString(index),
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(color: contrastColor),
-            textAlign: TextAlign.center,
-          ),
+        padding: const EdgeInsets.symmetric(horizontal: 32.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              UIStrings.listItem,
+              style: Theme.of(context).textTheme.caption!.copyWith(color: contrastColor),
+            ),
+            Text(
+              Utils.intToCommaSeparatedString(index),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: contrastColor),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );

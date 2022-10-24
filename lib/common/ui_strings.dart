@@ -17,11 +17,14 @@ class UIStrings {
   // -----------------------------------------------------------------------------------------------
 
   static const String scrollingScreenTitle = 'Neverending Scrolling?';
+  static const String listItem = 'Item';
 
   // -----------------------------------------------------------------------------------------------
   // Item Screen
   // -----------------------------------------------------------------------------------------------
 
-  static String itemScreenTitle(int index) => 'Item $index';
-  static String itemColor(String color) => 'Color $color';
+  static String itemScreenTitle(String index) => 'Item $index';
+  static const String itemColorCaption = 'Color';
+  static const String copyActionTooltip = 'Copy color code to clipboard';
+  static String colorCopiedSnackbar(String color) => '$color copied to clipboard';
 }

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../common/ui_strings.dart';
 import '../utils/color_utils.dart';
+import '../utils/utils.dart';
 
 class ItemScreenArguments {
   final int index;
@@ -20,6 +21,11 @@ class ItemScreen extends StatelessWidget {
   final int index;
   final Color color;
 
+  void _onCopyPressed(BuildContext context) {
+    final String colorHex = ColorUtils.toHex(color);
+    Utils.copyToClipboard(context, colorHex, successText: UIStrings.colorCopiedSnackbar(colorHex));
+  }
+
   @override
   Widget build(BuildContext context) {
     final Color contrastColor = ColorUtils.contrastOf(color);
@@ -27,13 +33,30 @@ class ItemScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: color,
       appBar: AppBar(
-        title: Text(UIStrings.itemScreenTitle(index)),
+        title: Text(UIStrings.itemScreenTitle(Utils.intToCommaSeparatedString(index))),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.copy),
+            tooltip: UIStrings.copyActionTooltip,
+            onPressed: () => _onCopyPressed(context),
+          ),
+        ],
       ),
-      body: Center(
-        child: Text(
-          UIStrings.itemColor(ColorUtils.toHex(color)),
-          style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: contrastColor),
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            UIStrings.itemColorCaption,
+            style: Theme.of(context).textTheme.caption!.copyWith(color: contrastColor),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            ColorUtils.toHex(color),
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: contrastColor),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }
